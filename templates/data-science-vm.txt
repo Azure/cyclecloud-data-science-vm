@@ -108,7 +108,7 @@ Order = 20
     Order = 10
 
         [[[parameter ServerClusterInitSpecs]]]
-        Label = ServerClusterInitSpecs
+        Label = Server Cluster-Init
         Description = Cluster init specs to apply to the dsvm server
         ParameterType = Cloud.ClusterInitSpecs
 
