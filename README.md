@@ -4,6 +4,17 @@ This project demonstrates launching the Microsoft Azure Data Science VM as a sta
 The Data Science VM may be used as the base image in most CycleCloud clusters.
 
 
+## License ##
+
+To use the Microsoft DataScience VM, you must first accept the license agreement.
+The simplest way to do so is to run the following Azure CLI commands:
+
+``` bash
+    az vm image accept-terms --publisher microsoft-ads --offer linux-data-science-vm --plan linuxdsvm
+    az vm image accept-terms --publisher microsoft-ads --offer linux-data-science-vm-ubuntu --plan linuxdsvmubuntu
+    az vm image accept-terms --publisher microsoft-ads --offer windows-data-science-vm --plan windows2016
+```
+
 
 ## Pre-Requisites ##
 

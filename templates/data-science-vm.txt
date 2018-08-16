@@ -5,6 +5,7 @@
 [cluster data-science-vm]
 FormLayout = selectionpanel
 Category = Infrastructure
+IconURL = https://github.com/azure/cyclecloud-data-science-vm/raw/master/icon.png
 
     [[node defaults]]
 
@@ -14,20 +15,21 @@ Category = Infrastructure
     KeyPairLocation = ~/.ssh/cyclecloud.pem
     UsePublicNetwork = $UsePublicNetwork
 
+    Password = $WindowsPassword
+    
     [[node dsvm]]
     MachineType = $MachineType
-    IsReturnProxy = $ReturnProxy
+    IsReturnProxy = ${configuration_dsvm_os == "windows" ? False : ReturnProxy}
     
     InstallJetpack = true
-    JetpackOs = linux
-    JetpackPlatform = centos-7
+    JetpackPlatform = ${configuration_dsvm_jetpack_platform[configuration_dsvm_os]}
     AwaitInstallation = true
 
     Azure.Publisher = microsoft-ads
-    Azure.Offer = linux-data-science-vm
-    Azure.ImageVersion = latest
-    Azure.Sku = linuxdsvm
-    Azure.OS = linux
+    Azure.Offer = ${configuration_dsvm_offer[configuration_dsvm_os]}
+    Azure.ImageVersion = $configuration_dsvm_version
+    Azure.Sku = ${configuration_dsvm_sku[configuration_dsvm_os]}
+    Azure.OS = ${configuration_dsvm_os == "windows" ? "windows" : "linux"}
     
     AdditionalClusterInitSpecs = $ServerClusterInitSpecs
     
@@ -52,7 +54,7 @@ Order = 1
         [[[parameter DSVM]]]
         HideLabel = true
         Config.Plugin = pico.widget.HtmlTemplateWidget
-        Config.Template := "<table><tr><td><img src='https://github.com/azure/cyclecloud-data-science-vm/raw/master/icon.png' width='192' height='192'></td></tr><tr><td><p>Creates a basic, single-node Data-Science-VM.</p><br><p>See the <a href=\"https://azure.microsoft.com/en-us/services/virtual-machines/data-science-virtual-machines/\" target=\"_blank\">Microsoft Data Science VM project site</a> for an overview.</p></td></tr></table>"
+        Config.Template := "<table><tr><td><img src=\"https://github.com/azure/cyclecloud-data-science-vm/raw/master/icon.png\" width=\"192\" height=\"192\"></td></tr><tr><td><p>Creates a basic, single-node Data-Science-VM.</p><br><p>See the <a href=\"https://azure.microsoft.com/en-us/services/virtual-machines/data-science-virtual-machines/\" target=\"_blank\">Microsoft Data Science VM project site</a> for an overview.</p></td></tr></table>"
 
 
         [[[parameter Readme]]]
@@ -64,7 +66,7 @@ Order = 1
 [parameters Required Settings]
 Order = 10
 
-    [[parameters Virtual Machines ]]
+    [[parameters Virtual Machines]]
     Description = "The cluster, in this case, has two roles: the scheduler master-node with shared filer and the execute hosts. Configure which VM types to use based on the requirements of your application."
     Order = 20
 
@@ -92,6 +94,66 @@ Order = 10
         Required = True
 
 
+    [[parameters Data Science VM Settings ]]
+    Description = "Section for configuring Data Science VM"
+    Order = 50
+
+        [[[parameter configuration_dsvm_version]]]
+        required = True
+        label = Image Version
+        description = Version of the DSVM image to use
+        defaultvalue = latest
+
+        [[[parameter configuration_dsvm_os]]]
+        required = True
+        label = Operating System
+        description = OS of the DSVM image to use
+        defaultvalue = centos-7
+        config.plugin = pico.control.AutoCompleteDropdown
+            [[[[list Config.Entries]]]]
+            Name = centos-7
+            Label = CentOS 7
+            [[[[list Config.Entries]]]]
+            Name = ubuntu-16
+            Label = Ubuntu 16
+            [[[[list Config.Entries]]]]
+            Name = windows
+            Label = Windows 2016
+
+        [[[parameter configuration_dsvm_sku]]]
+        required = True
+        label = Image SKU
+        parametertype = hidden
+            [[[[record DefaultValue]]]]
+            centos-7 = linuxdsvm
+            ubuntu-16 = linuxdsvmubuntu
+            windows = windows2016
+
+        [[[parameter configuration_dsvm_offer]]]
+        required = True
+        label = Image Offer
+        parametertype = hidden
+            [[[[record DefaultValue]]]]
+            centos-7 = linux-data-science-vm
+            ubuntu-16 = linux-data-science-vm-ubuntu
+            windows = windows-data-science-vm
+
+        [[[parameter configuration_dsvm_jetpack_platform]]]
+        required = True
+        label = Jetpack Platform
+        parametertype = hidden
+            [[[[record DefaultValue]]]]
+            centos-7 = centos-7
+            ubuntu-16 = ubuntu-16.04
+            windows = windows
+
+        [[[parameter WindowsPassword]]]
+        Label = Password
+        ParameterType = Password
+        Description = The password for the built-in local user on windows nodes for direct access.
+        Conditions.Required := startswith("win", configuration_dsvm_os)
+        Conditions.Excluded := !startswith("win", configuration_dsvm_os)
+
 [parameters Advanced Settings]
 Order = 20
 
@@ -101,6 +163,8 @@ Order = 20
         [[[parameter Credentials]]]
         Description = The credentials for the cloud provider
         ParameterType = Cloud.Credentials
+
+
 
 
     [[parameters Software]]
