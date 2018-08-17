@@ -156,7 +156,7 @@ Order = 10
         [[[parameter WindowsWarning]]]
         HideLabel = true
         Config.Plugin = pico.widget.HtmlTemplateWidget
-        Config.Template := """<p><b>WARNING</b></p><br><p>The Windows DSVM does not support ReturnProxy mode.</p><p>Please ensure that CycleCloud is in the same Virtual Network as the VM or add a dedicated linux proxy node.</p>"""
+        Config.Template := """<p style=\"padding: 20px\"><span class=\"alert-warn warning\"><strong>WARNING:<br>The Windows DSVM does not support ReturnProxy mode.<br>Please ensure that CycleCloud is in the same Virtual Network as the VM or add a dedicated linux proxy node.</strong></span></p>"""
         Conditions.Excluded := !startswith("win", configuration_dsvm_os)
 
 
