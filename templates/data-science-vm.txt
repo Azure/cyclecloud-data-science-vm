@@ -81,8 +81,7 @@ Order = 10
         Label = Machine Type
         Description = The machine type for the DSVM server
         ParameterType = Cloud.MachineType
-        DefaultValue = Standard_DS4_v2
-
+        DefaultValue = Standard_NC6s_v2
 
     [[parameters Networking]]
     Order = 40
@@ -153,6 +152,13 @@ Order = 10
         Description = The password for the built-in local user on windows nodes for direct access.
         Conditions.Required := startswith("win", configuration_dsvm_os)
         Conditions.Excluded := !startswith("win", configuration_dsvm_os)
+
+        [[[parameter WindowsWarning]]]
+        HideLabel = true
+        Config.Plugin = pico.widget.HtmlTemplateWidget
+        Config.Template := """<p><b>WARNING</b></p><br><p>The Windows DSVM does not support ReturnProxy mode.</p><p>Please ensure that CycleCloud is in the same Virtual Network as the VM or add a dedicated linux proxy node.</p>"""
+        Conditions.Excluded := !startswith("win", configuration_dsvm_os)
+
 
 [parameters Advanced Settings]
 Order = 20
