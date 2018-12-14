@@ -29,7 +29,7 @@ IconURL = https://github.com/azure/cyclecloud-data-science-vm/raw/master/icon.pn
     Azure.Offer = ${configuration_dsvm_offer[configuration_dsvm_os]}
     Azure.ImageVersion = $configuration_dsvm_version
     Azure.Sku = ${configuration_dsvm_sku[configuration_dsvm_os]}
-    Azure.OS = ${configuration_dsvm_os == "windows" ? "windows" : "linux"}
+    ImageOS = ${configuration_dsvm_os == "windows" ? "windows" : "linux"}
     
     AdditionalClusterInitSpecs = $ServerClusterInitSpecs
     
