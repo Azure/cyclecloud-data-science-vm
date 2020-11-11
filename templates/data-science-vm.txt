@@ -36,7 +36,7 @@ IconURL = https://github.com/azure/cyclecloud-data-science-vm/raw/master/icon.pn
         [[[configuration]]]
         cyclecloud.discoverable = true
 
-        [[[cluster-init data-science-vm:default:1.0.0]]]
+        [[[cluster-init data-science-vm:default:1.1.0]]]
 
         [[[input-endpoint ganglia]]]
         PrivatePort = 8652
