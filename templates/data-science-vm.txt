@@ -54,7 +54,7 @@ Order = 1
         [[[parameter DSVM]]]
         HideLabel = true
         Config.Plugin = pico.widget.HtmlTemplateWidget
-        Config.Template := "<table><tr><td><img src=\"https://github.com/azure/cyclecloud-data-science-vm/raw/master/icon.png\" width=\"192\" height=\"192\"></td></tr><tr><td><p>Creates a basic, single-node Data-Science-VM.</p><br><p>See the <a href=\"https://azure.microsoft.com/en-us/services/virtual-machines/data-science-virtual-machines/\" target=\"_blank\">Microsoft Data Science VM project site</a> for an overview.</p></td></tr></table>"
+        Config.Template := "<table role=\"presentation\"><tr><td><img alt=\"Data Science VM icon\" src=\"https://github.com/azure/cyclecloud-data-science-vm/raw/master/icon.png\" width=\"192\" height=\"192\"></td></tr><tr><td><p>Creates a basic, single-node Data-Science-VM.</p><br><p>See the <a href=\"https://azure.microsoft.com/en-us/services/virtual-machines/data-science-virtual-machines/\" target=\"_blank\">Microsoft Data Science VM project site</a> for an overview.</p></td></tr></table>"
 
 
         [[[parameter Readme]]]
