@@ -25,18 +25,18 @@ IconURL = https://github.com/azure/cyclecloud-data-science-vm/raw/master/icon.pn
     JetpackPlatform = ${configuration_dsvm_jetpack_platform[configuration_dsvm_os]}
     AwaitInstallation = true
 
-    Azure.Publisher = microsoft-ads
+    Azure.Publisher = ${configuration_dsvm_publisher[configuration_dsvm_os]}
     Azure.Offer = ${configuration_dsvm_offer[configuration_dsvm_os]}
     Azure.ImageVersion = $configuration_dsvm_version
     Azure.Sku = ${configuration_dsvm_sku[configuration_dsvm_os]}
-    ImageOS = ${configuration_dsvm_os == "windows" ? "windows" : "linux"}
+    ImageOS = ${configuration_dsvm_jetpack_platform[configuration_dsvm_os] == "windows" ? "windows" : "linux"}
     
     AdditionalClusterInitSpecs = $ServerClusterInitSpecs
     
         [[[configuration]]]
         cyclecloud.discoverable = true
 
-        [[[cluster-init data-science-vm:default:1.1.0]]]
+        [[[cluster-init data-science-vm:default:1.2.0]]]
 
         [[[input-endpoint ganglia]]]
         PrivatePort = 8652
@@ -112,11 +112,20 @@ Order = 10
             Name = centos-7
             Label = CentOS 7
             [[[[list Config.Entries]]]]
-            Name = ubuntu-16
-            Label = Ubuntu 16
+            Name = ubuntu-1804-gen1
+            Label = Ubuntu 1804-gen1
             [[[[list Config.Entries]]]]
-            Name = windows
+            Name = ubuntu-1804-gen2
+            Label = Ubuntu 1804-gen2
+            [[[[list Config.Entries]]]]
+            Name = windows2016
             Label = Windows 2016
+            [[[[list Config.Entries]]]]
+            Name = windows2019-gen1
+            Label = Windows 2019-gen1
+            [[[[list Config.Entries]]]]
+            Name = windows2019-gen2
+            Label = Windows 2019-gen2
 
         [[[parameter configuration_dsvm_sku]]]
         required = True
@@ -124,8 +133,11 @@ Order = 10
         parametertype = hidden
             [[[[record DefaultValue]]]]
             centos-7 = linuxdsvm
-            ubuntu-16 = linuxdsvmubuntu
-            windows = windows2016
+            ubuntu-1804-gen1 = 1804
+            ubuntu-1804-gen2 = 1804-gen2
+            windows2016 = server-2016
+            windows2019-gen1 = server-2019
+            windows2019-gen2 = server-2019-g2
 
         [[[parameter configuration_dsvm_offer]]]
         required = True
@@ -133,8 +145,24 @@ Order = 10
         parametertype = hidden
             [[[[record DefaultValue]]]]
             centos-7 = linux-data-science-vm
-            ubuntu-16 = linux-data-science-vm-ubuntu
-            windows = windows-data-science-vm
+            ubuntu-1804-gen1 = ubuntu-1804
+            ubuntu-1804-gen2 = ubuntu-1804
+            windows2016 = dsvm-windows
+            windows2019-gen1 = dsvm-windows
+            windows2019-gen2 = dsvm-windows
+
+
+        [[[parameter configuration_dsvm_publisher]]]
+        required = True
+        label = Publisher
+        parametertype = hidden
+            [[[[record DefaultValue]]]]
+            centos-7 = microsoft-ads
+            ubuntu-1804-gen1 = microsoft-dsvm
+            ubuntu-1804-gen2 = microsoft-dsvm
+            windows2016 = microsoft-dsvm
+            windows2019-gen1 = microsoft-dsvm
+            windows2019-gen2 = microsoft-dsvm
 
         [[[parameter configuration_dsvm_jetpack_platform]]]
         required = True
@@ -142,8 +170,11 @@ Order = 10
         parametertype = hidden
             [[[[record DefaultValue]]]]
             centos-7 = centos-7
-            ubuntu-16 = ubuntu-16.04
-            windows = windows
+            ubuntu-1804-gen1 = ubuntu-18.04
+            ubuntu-1804-gen2 = ubuntu-18.04
+            windows2016 = windows
+            windows2019-gen1 = windows
+            windows2019-gen2 = windows
 
         [[[parameter WindowsPassword]]]
         Label = Password
